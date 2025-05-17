@@ -38,10 +38,11 @@ export interface RegisterUserPayload {
   email: string;
   password: string;
   confirmPassword: string;
+  role?: UserRole;
+  // Business fields now optional in the model but removed from the UI
   businessName?: string;
   tinNumber?: string;
   businessType?: BusinessType;
-  role?: UserRole;
 }
 
 export interface LoginPayload {

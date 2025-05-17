@@ -7,8 +7,7 @@ import { BlurCard } from "@/components/ui/blur-card";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Eye, EyeOff, Mail, Lock, CheckCircle } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
-import { UserRole, BusinessType } from "@/models/User";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { UserRole } from "@/models/User";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -38,11 +37,6 @@ const signupSchema = z.object({
       { message: "Password must include uppercase, lowercase, number and special character" }
     ),
   confirmPassword: z.string(),
-  businessName: z.string().optional(),
-  tinNumber: z.string()
-    .regex(/^\d{9,10}$/, { message: "TIN Number must be 9-10 digits" })
-    .optional(),
-  businessType: z.nativeEnum(BusinessType).optional(),
   role: z.nativeEnum(UserRole).default(UserRole.BUSINESS),
 }).refine(data => data.password === data.confirmPassword, {
   message: "Passwords don't match",
@@ -76,9 +70,6 @@ const AuthForm = ({ mode }: AuthFormProps) => {
       email: "",
       password: "",
       confirmPassword: "",
-      businessName: "",
-      tinNumber: "",
-      businessType: undefined,
       role: UserRole.BUSINESS,
     },
   });
@@ -102,9 +93,6 @@ const AuthForm = ({ mode }: AuthFormProps) => {
         email: values.email,
         password: values.password,
         confirmPassword: values.confirmPassword,
-        businessName: values.businessName,
-        tinNumber: values.tinNumber,
-        businessType: values.businessType,
         role: values.role,
       });
       navigate('/dashboard');
@@ -299,68 +287,6 @@ const AuthForm = ({ mode }: AuthFormProps) => {
                       />
                     </FormControl>
                   </div>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={signupForm.control}
-              name="businessName"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Business Name</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="Your Business Name"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={signupForm.control}
-              name="tinNumber"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>TIN Number</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="PNG Tax Identification Number"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={signupForm.control}
-              name="businessType"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Business Type</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select business type" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {Object.values(BusinessType).map((type) => (
-                        <SelectItem key={type} value={type}>
-                          {type.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
                   <FormMessage />
                 </FormItem>
               )}
