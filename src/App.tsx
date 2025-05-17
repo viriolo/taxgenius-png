@@ -5,11 +5,15 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "@/components/ui/theme-provider";
+import { AuthProvider } from "@/contexts/AuthContext";
+import ProtectedRoute from "@/components/ProtectedRoute";
+import { UserRole } from "@/models/User";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import Unauthorized from "./pages/Unauthorized";
 import Dashboard from "./pages/Dashboard";
 import TaxCalculator from "./pages/TaxCalculator";
 import PNGIncomeTaxCalculator from "./pages/PNGIncomeTaxCalculator";
@@ -36,24 +40,82 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <ThemeProvider defaultTheme="light" storageKey="wantok-ai-theme">
       <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Layout><Index /></Layout>} />
-            <Route path="/login" element={<Layout><Login /></Layout>} />
-            <Route path="/signup" element={<Layout><Signup /></Layout>} />
-            <Route path="/dashboard" element={<Layout><Dashboard /></Layout>} />
-            <Route path="/tax-calculator" element={<Layout><TaxCalculator /></Layout>} />
-            <Route path="/income-tax-calculator" element={<Layout><PNGIncomeTaxCalculator /></Layout>} />
-            <Route path="/legal-services" element={<Layout><LegalServices /></Layout>} />
-            <Route path="/reports" element={<Layout><Reports /></Layout>} />
-            <Route path="/profile" element={<Layout><Profile /></Layout>} />
-            <Route path="/help" element={<Layout><Help /></Layout>} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<Layout><NotFound /></Layout>} />
-          </Routes>
-        </BrowserRouter>
+        <AuthProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Layout><Index /></Layout>} />
+              <Route path="/login" element={<Layout><Login /></Layout>} />
+              <Route path="/signup" element={<Layout><Signup /></Layout>} />
+              <Route path="/unauthorized" element={<Layout><Unauthorized /></Layout>} />
+              
+              {/* Protected Routes */}
+              <Route path="/dashboard" element={
+                <Layout>
+                  <ProtectedRoute>
+                    <Dashboard />
+                  </ProtectedRoute>
+                </Layout>
+              } />
+              
+              <Route path="/tax-calculator" element={
+                <Layout>
+                  <ProtectedRoute>
+                    <TaxCalculator />
+                  </ProtectedRoute>
+                </Layout>
+              } />
+              
+              <Route path="/income-tax-calculator" element={
+                <Layout>
+                  <ProtectedRoute>
+                    <PNGIncomeTaxCalculator />
+                  </ProtectedRoute>
+                </Layout>
+              } />
+              
+              <Route path="/legal-services" element={
+                <Layout>
+                  <ProtectedRoute>
+                    <LegalServices />
+                  </ProtectedRoute>
+                </Layout>
+              } />
+              
+              <Route path="/reports" element={
+                <Layout>
+                  <ProtectedRoute>
+                    <Reports />
+                  </ProtectedRoute>
+                </Layout>
+              } />
+              
+              <Route path="/profile" element={
+                <Layout>
+                  <ProtectedRoute>
+                    <Profile />
+                  </ProtectedRoute>
+                </Layout>
+              } />
+              
+              {/* Admin Routes */}
+              <Route path="/admin" element={
+                <Layout>
+                  <ProtectedRoute roles={[UserRole.ADMIN]}>
+                    <div>Admin Dashboard</div>
+                  </ProtectedRoute>
+                </Layout>
+              } />
+              
+              {/* Help page accessible to all */}
+              <Route path="/help" element={<Layout><Help /></Layout>} />
+              
+              {/* Catch-all route */}
+              <Route path="*" element={<Layout><NotFound /></Layout>} />
+            </Routes>
+          </BrowserRouter>
+        </AuthProvider>
       </TooltipProvider>
     </ThemeProvider>
   </QueryClientProvider>

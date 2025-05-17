@@ -12,4 +12,5 @@ export { default as DocumentProcessingService } from './DocumentProcessingServic
 export { default as AIInsightsService } from './AIInsightsService';
 export * from './PNGTaxCalculationService';
 export * from './common/Pipeline';
-
+export { default as AuthService } from './AuthService';
+export { EventBus } from './EventBus';
