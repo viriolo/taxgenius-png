@@ -22,6 +22,7 @@ import Reports from "./pages/Reports";
 import Profile from "./pages/Profile";
 import Help from "./pages/Help";
 import NotFound from "./pages/NotFound";
+import ChatAssistant from "./pages/ChatAssistant";
 
 const queryClient = new QueryClient();
 
@@ -49,6 +50,7 @@ const App = () => (
               <Route path="/login" element={<Layout><Login /></Layout>} />
               <Route path="/signup" element={<Layout><Signup /></Layout>} />
               <Route path="/unauthorized" element={<Layout><Unauthorized /></Layout>} />
+              <Route path="/chat-assistant" element={<Layout><ChatAssistant /></Layout>} />
               
               {/* Protected Routes */}
               <Route path="/dashboard" element={

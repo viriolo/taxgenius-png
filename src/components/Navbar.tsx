@@ -13,7 +13,7 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
-import { Menu } from "lucide-react";
+import { Menu, Bot } from "lucide-react";
 import {
   Sheet,
   SheetContent,
@@ -37,6 +37,7 @@ const Navbar = () => {
       items: [
         { name: "PNG Tax Calculator", path: "/income-tax-calculator", description: "Calculate your PNG Income Tax" },
         { name: "Legal Services", path: "/legal-services", description: "Get professional legal advice" },
+        { name: "Service Chat Assistant", path: "/chat-assistant", description: "Find and chat with PNG service providers" },
       ] 
     },
     { name: "Reports", path: "/reports" },
@@ -115,6 +116,18 @@ const Navbar = () => {
         </div>
 
         <div className="flex flex-1 items-center justify-end space-x-4">
+          {/* Chat Assistant Link */}
+          <Link
+            to="/chat-assistant"
+            className={cn(
+              buttonVariants({ variant: "outline", size: "sm" }),
+              "hidden md:flex items-center gap-1"
+            )}
+          >
+            <Bot className="h-4 w-4" />
+            Chat Assistant
+          </Link>
+          
           {/* Theme toggle */}
           <ThemeToggle />
           
@@ -132,6 +145,21 @@ const Navbar = () => {
                   <span className="inline-block font-bold text-xl">wantok.ai</span>
                 </Link>
                 <nav className="flex flex-col gap-5 pt-2">
+                  {/* Add Chat Assistant to mobile menu */}
+                  <Link
+                    to="/chat-assistant"
+                    onClick={() => setIsOpen(false)}
+                    className={cn(
+                      "text-sm font-medium flex items-center gap-2",
+                      isActive("/chat-assistant")
+                        ? "text-foreground"
+                        : "text-muted-foreground hover:text-foreground"
+                    )}
+                  >
+                    <Bot className="h-4 w-4" />
+                    Chat Assistant
+                  </Link>
+                  
                   {/* Main mobile items */}
                   {mainNavItems.map((item, index) => {
                     if (item.items) {
