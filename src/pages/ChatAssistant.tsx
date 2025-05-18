@@ -6,18 +6,12 @@ import { Card } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import { Send, Bot, User, ExternalLink } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import AnimatedBackground from '@/components/chat/AnimatedBackground';
+import { useIsTyping } from '@/hooks/useIsTyping';
+import { processUserMessage, Business } from '@/services/ai/AIService';
 
 // Define message types
 type MessageRole = 'user' | 'assistant' | 'system';
-
-interface Business {
-  id: string;
-  name: string;
-  description: string;
-  category: string;
-  logo?: string;
-  website?: string;
-}
 
 interface Message {
   id: string;
@@ -26,55 +20,6 @@ interface Message {
   timestamp: Date;
   businesses?: Business[];
 }
-
-// Sample businesses data organized by category
-const businessesByCategory: Record<string, Business[]> = {
-  'legal': [
-    { 
-      id: 'png-legal', 
-      name: 'PNG Legal Services', 
-      description: 'Specialized legal services for businesses and individuals in Papua New Guinea.',
-      category: 'legal',
-      logo: '/placeholder.svg'
-    },
-    { 
-      id: 'pacific-law', 
-      name: 'Pacific Law Associates', 
-      description: 'Corporate and tax law experts serving clients throughout PNG.',
-      category: 'legal'
-    }
-  ],
-  'accounting': [
-    { 
-      id: 'wantok-accounting', 
-      name: 'Wantok Accounting', 
-      description: 'Professional accounting and tax preparation services for PNG businesses.',
-      category: 'accounting',
-      logo: '/placeholder.svg'
-    },
-    { 
-      id: 'png-tax-experts', 
-      name: 'PNG Tax Experts', 
-      description: 'Specialized in tax compliance and planning for businesses in Papua New Guinea.',
-      category: 'accounting'
-    }
-  ],
-  'tax-filing': [
-    { 
-      id: 'easy-tax', 
-      name: 'Easy Tax PNG', 
-      description: 'Streamlined tax filing services for individuals and small businesses.',
-      category: 'tax-filing',
-      logo: '/placeholder.svg'
-    },
-    { 
-      id: 'tax-pro', 
-      name: 'Tax Pro Solutions', 
-      description: 'Professional tax filing and advisory services.',
-      category: 'tax-filing'
-    }
-  ]
-};
 
 // Initial welcome message
 const welcomeMessage: Message = {
@@ -90,6 +35,7 @@ const ChatAssistant: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [selectedBusiness, setSelectedBusiness] = useState<Business | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const { isTyping } = useIsTyping({ text: input });
 
   // Auto-scroll to bottom of messages
   useEffect(() => {
@@ -99,7 +45,7 @@ const ChatAssistant: React.FC = () => {
   }, [messages]);
 
   // Function to handle sending messages
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     if (!input.trim()) return;
     
     // Add user message
@@ -114,83 +60,34 @@ const ChatAssistant: React.FC = () => {
     setInput('');
     setIsLoading(true);
     
-    // Simulate response delay
-    setTimeout(() => {
-      let responseMessage: Message;
+    try {
+      // Process the message using our AI service
+      const response = await processUserMessage(input, selectedBusiness);
       
-      if (selectedBusiness) {
-        // Business-specific chatbot response
-        responseMessage = {
-          id: (Date.now() + 1).toString(),
-          role: 'assistant',
-          content: generateBusinessResponse(selectedBusiness, input),
-          timestamp: new Date(),
-        };
-      } else {
-        // Check if the user is asking about service types
-        const lowercaseInput = input.toLowerCase();
-        
-        if (lowercaseInput.includes('legal') || lowercaseInput.includes('lawyer') || lowercaseInput.includes('attorney')) {
-          responseMessage = generateServiceCategoryResponse('legal');
-        } else if (lowercaseInput.includes('account') || lowercaseInput.includes('bookkeeping')) {
-          responseMessage = generateServiceCategoryResponse('accounting');
-        } else if (lowercaseInput.includes('tax') || lowercaseInput.includes('filing')) {
-          responseMessage = generateServiceCategoryResponse('tax-filing');
-        } else {
-          responseMessage = {
-            id: (Date.now() + 1).toString(),
-            role: 'assistant',
-            content: "I can help you find service providers in Papua New Guinea. Could you please specify what type of service you're looking for? For example: legal services, accounting, tax filing assistance, etc.",
-            timestamp: new Date(),
-          };
-        }
-      }
+      // Create response message
+      const responseMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        role: 'assistant',
+        content: response.text,
+        timestamp: new Date(),
+        businesses: response.businessSuggestions
+      };
       
       setMessages(prev => [...prev, responseMessage]);
+    } catch (error) {
+      console.error('Error processing message:', error);
+      
+      // Error message
+      const errorMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        role: 'assistant',
+        content: "I'm sorry, I encountered an issue processing your request. Please try again.",
+        timestamp: new Date(),
+      };
+      
+      setMessages(prev => [...prev, errorMessage]);
+    } finally {
       setIsLoading(false);
-    }, 1000);
-  };
-
-  // Generate response for a specific service category
-  const generateServiceCategoryResponse = (category: string): Message => {
-    const businesses = businessesByCategory[category] || [];
-    
-    let content = '';
-    switch(category) {
-      case 'legal':
-        content = "Here are some legal service providers in Papua New Guinea that can assist you:";
-        break;
-      case 'accounting':
-        content = "Here are accounting firms in Papua New Guinea that can help with your financial needs:";
-        break;
-      case 'tax-filing':
-        content = "These tax filing services in Papua New Guinea can help you prepare and submit your tax documents:";
-        break;
-      default:
-        content = "Here are some service providers that might help you:";
-    }
-    
-    return {
-      id: (Date.now() + 1).toString(),
-      role: 'assistant',
-      content,
-      timestamp: new Date(),
-      businesses
-    };
-  };
-
-  // Generate a business-specific response
-  const generateBusinessResponse = (business: Business, userQuery: string): string => {
-    const lowercaseQuery = userQuery.toLowerCase();
-    
-    if (lowercaseQuery.includes('service') || lowercaseQuery.includes('help') || lowercaseQuery.includes('offer')) {
-      return `At ${business.name}, we offer a range of professional services tailored to your needs in Papua New Guinea. Our team specializes in ${business.category} services with personalized attention to each client. How can we assist you today?`;
-    } else if (lowercaseQuery.includes('cost') || lowercaseQuery.includes('price') || lowercaseQuery.includes('fee')) {
-      return `${business.name}'s fees vary based on the complexity of your needs. We offer competitive rates and transparent pricing. Would you like to schedule a consultation to discuss your specific requirements and get a detailed quote?`;
-    } else if (lowercaseQuery.includes('contact') || lowercaseQuery.includes('appointment') || lowercaseQuery.includes('schedule')) {
-      return `You can schedule an appointment with ${business.name} by calling our office or sending us your details. Would you like me to arrange a call back from one of our representatives?`;
-    } else {
-      return `Thank you for your interest in ${business.name}. How can we assist you with your ${business.category} needs today?`;
     }
   };
 
@@ -222,8 +119,11 @@ const ChatAssistant: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto py-8 h-[calc(100vh-8rem)]">
-      <Card className="flex flex-col h-full shadow-lg border-2">
+    <div className="container mx-auto py-8 h-[calc(100vh-8rem)] relative">
+      {/* Animated Background */}
+      <AnimatedBackground isTyping={isTyping} />
+      
+      <Card className="flex flex-col h-full shadow-lg border-2 bg-background/80 backdrop-blur-sm">
         {/* Chat header */}
         <div className="flex items-center justify-between p-4 border-b">
           <div className="flex items-center gap-3">
@@ -274,7 +174,7 @@ const ChatAssistant: React.FC = () => {
                       <>
                         <AvatarImage 
                           src={selectedBusiness?.logo || "/placeholder.svg"} 
-                          alt={selectedBusiness?.name || "Wantok.ai"} 
+                          alt={selectedBusiness?.name || "Wantok"} 
                         />
                         <AvatarFallback className="bg-primary/10 text-primary">
                           <Bot className="h-5 w-5" />
@@ -353,7 +253,7 @@ const ChatAssistant: React.FC = () => {
                 <Avatar className="h-8 w-8">
                   <AvatarImage 
                     src={selectedBusiness?.logo || "/placeholder.svg"} 
-                    alt={selectedBusiness?.name || "Wantok.ai"} 
+                    alt={selectedBusiness?.name || "Wantok"} 
                   />
                   <AvatarFallback className="bg-primary/10 text-primary">
                     <Bot className="h-5 w-5" />
