@@ -69,8 +69,15 @@ const businessesByCategory: Record<string, Business[]> = {
   ]
 };
 
+// Define the type for our pipeline data
+interface PipelineData {
+  message: string;
+  category: string | null;
+  response: ChatResponse;
+}
+
 // Check for specific service types in the user message
-const serviceDetectionStep: PipelineStep<{ message: string, category: string | null }> = {
+const serviceDetectionStep: PipelineStep<PipelineData> = {
   execute: (data) => {
     const lowercaseMessage = data.message.toLowerCase();
     let category: string | null = null;
@@ -88,7 +95,7 @@ const serviceDetectionStep: PipelineStep<{ message: string, category: string | n
 };
 
 // Generate response based on detected service category
-const responseGenerationStep: PipelineStep<{ message: string, category: string | null, response: ChatResponse }> = {
+const responseGenerationStep: PipelineStep<PipelineData> = {
   execute: (data) => {
     let response: ChatResponse = {
       text: "I can help you find service providers in Papua New Guinea. Could you please specify what type of service you're looking for? For example: legal services, accounting, tax filing assistance, etc."
@@ -147,7 +154,7 @@ export async function processUserMessage(message: string, selectedBusiness: Busi
   }
   
   // Otherwise, use the service detection pipeline
-  const pipeline = new Pipeline<{ message: string, category: string | null, response: ChatResponse }>()
+  const pipeline = new Pipeline<PipelineData>()
     .addStep(serviceDetectionStep)
     .addStep(responseGenerationStep);
   
