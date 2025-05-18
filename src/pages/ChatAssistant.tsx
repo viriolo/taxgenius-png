@@ -80,7 +80,7 @@ const businessesByCategory: Record<string, Business[]> = {
 const welcomeMessage: Message = {
   id: '0',
   role: 'assistant',
-  content: "Hello! I'm your Wantok.ai assistant. I can help you find the right service providers in Papua New Guinea. What type of service are you looking for today? For example: legal services, accounting, tax filing assistance, etc.",
+  content: "Hello! I'm your Wantok assistant. I can help you find the right service providers in Papua New Guinea. What type of service are you looking for today? For example: legal services, accounting, tax filing assistance, etc.",
   timestamp: new Date(),
 };
 
@@ -235,7 +235,7 @@ const ChatAssistant: React.FC = () => {
             </Avatar>
             <div>
               <h2 className="font-semibold">
-                {selectedBusiness ? selectedBusiness.name : "Wantok.ai Assistant"}
+                {selectedBusiness ? selectedBusiness.name : "Wantok"}
               </h2>
               {selectedBusiness && (
                 <p className="text-xs text-muted-foreground">{selectedBusiness.category}</p>
@@ -402,7 +402,7 @@ const ChatAssistant: React.FC = () => {
           <div className="text-xs text-muted-foreground mt-2 text-center">
             {selectedBusiness 
               ? `You are chatting with ${selectedBusiness.name}'s virtual assistant`
-              : "Wantok.ai - Connecting you with service providers in Papua New Guinea"}
+              : "Wantok - Connecting you with service providers in Papua New Guinea"}
           </div>
         </div>
       </Card>
