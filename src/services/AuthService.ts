@@ -47,6 +47,7 @@ class AuthService {
   // Private constructor for singleton pattern
   private constructor() {
     this.loadUserFromStorage();
+    this.createDummyUserIfNeeded();
     
     // Set up interval to check token expiration
     setInterval(() => this.checkTokenExpiration(), 60 * 1000); // Check every minute
@@ -60,6 +61,46 @@ class AuthService {
       AuthService.instance = new AuthService();
     }
     return AuthService.instance;
+  }
+  
+  /**
+   * Create a dummy user for testing purposes
+   */
+  private async createDummyUserIfNeeded(): Promise<void> {
+    const users = this.getStoredUsers();
+    const dummyEmail = 'test@wantok.ai';
+    
+    // Check if dummy user already exists
+    if (users.some(user => user.email === dummyEmail)) {
+      return;
+    }
+    
+    console.log('Creating dummy user account for testing...');
+    
+    try {
+      const userId = this.generateUniqueId();
+      const now = new Date();
+      const hashedPassword = await this.hashPassword('password123');
+      
+      const dummyUser: UserProfile & { password: string } = {
+        id: userId,
+        email: dummyEmail,
+        firstName: 'Test',
+        lastName: 'User',
+        businessName: 'Wantok Test Business',
+        tinNumber: '123456789',
+        verified: true,
+        role: UserRole.BUSINESS,
+        createdAt: now,
+        updatedAt: now,
+        password: hashedPassword
+      };
+      
+      this.saveUserToStorage(dummyUser);
+      console.log('Dummy user created! Login with: test@wantok.ai / password123');
+    } catch (error) {
+      console.error('Failed to create dummy user:', error);
+    }
   }
   
   /**
