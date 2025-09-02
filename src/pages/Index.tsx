@@ -14,10 +14,10 @@ import { CheckCircle, Star, Users } from "lucide-react";
 const Index = () => {
   const heroProps = {
     title: "wantok.ai",
-    subtitle: "Professional services simplified for Papua New Guinea",
-    ctaText: "Get Started",
+    subtitle: "AI-powered business discovery and support for Papua New Guinea",
+    ctaText: "Find Services",
     ctaLink: "/signup",
-    secondaryCtaText: "Explore Services",
+    secondaryCtaText: "List Your Business",
     secondaryCtaLink: "#services",
   };
   
@@ -32,21 +32,21 @@ const Index = () => {
       name: "James Kobol",
       role: "Business Owner",
       company: "PNGTech Solutions",
-      quote: "viinno.com has made tax compliance so much easier for my business. The calculations are accurate and the interface is intuitive.",
+      quote: "Wantok.ai helped me find reliable suppliers and connect with new customers. It's become essential for my business growth.",
       rating: 5
     },
     {
       name: "Sarah Waka",
       role: "HR Manager",
       company: "Highland Enterprises",
-      quote: "The legal document review service saved us time and money. We received expert advice quickly when we needed it most.",
+      quote: "Finding qualified contractors was always a challenge. Wantok.ai made it simple and I can trust the recommendations from the community.",
       rating: 5
     },
     {
       name: "Michael Temu",
       role: "Financial Controller",
       company: "Port Moresby Trading",
-      quote: "As a financial professional, I appreciate the accuracy and detail in the tax calculations. This service has become essential for our operations.",
+      quote: "The AI business advisor feature helped me understand loan requirements and improve my business plan. Excellent support for SMEs.",
       rating: 4
     }
   ];
@@ -60,9 +60,9 @@ const Index = () => {
         <section className="py-16">
           <div className="container max-w-6xl px-4 mx-auto">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4">Why Choose viinno.com</h2>
+              <h2 className="text-3xl font-bold mb-4">Why Choose Wantok.ai</h2>
               <p className="text-muted-foreground max-w-2xl mx-auto">
-                Our platform offers distinct advantages for businesses and individuals in Papua New Guinea.
+                Your trusted platform for business discovery, SME support, and community connections across Papua New Guinea.
               </p>
             </div>
             
@@ -77,9 +77,9 @@ const Index = () => {
                     <div className="mb-4 p-3 rounded-full bg-secondary/50 inline-flex">
                       <CheckCircle className="h-6 w-6 text-primary" />
                     </div>
-                    <h3 className="text-xl font-semibold mb-3">Tax Compliance</h3>
+                    <h3 className="text-xl font-semibold mb-3">Business Discovery</h3>
                     <p className="text-muted-foreground">
-                      Stay compliant with PNG tax regulations with our up-to-date calculators and advisories.
+                      Find reliable services, suppliers, and partners across PNG with AI-powered search and recommendations.
                     </p>
                   </BlurCard>
                   
@@ -87,9 +87,9 @@ const Index = () => {
                     <div className="mb-4 p-3 rounded-full bg-secondary/50 inline-flex">
                       <Users className="h-6 w-6 text-primary" />
                     </div>
-                    <h3 className="text-xl font-semibold mb-3">Team Management</h3>
+                    <h3 className="text-xl font-semibold mb-3">SME Support</h3>
                     <p className="text-muted-foreground">
-                      Manage employee tax declarations and payroll calculations efficiently through one platform.
+                      Get AI-powered business advice on pricing, marketing, compliance, and funding opportunities.
                     </p>
                   </BlurCard>
                   
@@ -97,9 +97,9 @@ const Index = () => {
                     <div className="mb-4 p-3 rounded-full bg-secondary/50 inline-flex">
                       <Star className="h-6 w-6 text-primary" />
                     </div>
-                    <h3 className="text-xl font-semibold mb-3">Expert Guidance</h3>
+                    <h3 className="text-xl font-semibold mb-3">Digital Visibility</h3>
                     <p className="text-muted-foreground">
-                      Access professional legal advice for business contracts, disputes, and compliance issues.
+                      Showcase your business online and connect with customers through our trusted platform.
                     </p>
                   </BlurCard>
                 </div>
@@ -111,9 +111,9 @@ const Index = () => {
                     <div className="mb-4 p-3 rounded-full bg-secondary/50 inline-flex">
                       <CheckCircle className="h-6 w-6 text-primary" />
                     </div>
-                    <h3 className="text-xl font-semibold mb-3">Personal Taxes</h3>
+                    <h3 className="text-xl font-semibold mb-3">Service Discovery</h3>
                     <p className="text-muted-foreground">
-                      Calculate your income tax accurately with our easy-to-use PNG tax calculator.
+                      Quickly find mechanics, clinics, PMVs, and other essential services in your area.
                     </p>
                   </BlurCard>
                   
@@ -121,9 +121,9 @@ const Index = () => {
                     <div className="mb-4 p-3 rounded-full bg-secondary/50 inline-flex">
                       <Users className="h-6 w-6 text-primary" />
                     </div>
-                    <h3 className="text-xl font-semibold mb-3">Family Planning</h3>
+                    <h3 className="text-xl font-semibold mb-3">Trusted Networks</h3>
                     <p className="text-muted-foreground">
-                      Get advice on dependant declarations and optimize your family's tax situation legally.
+                      Leverage wantok connections and community recommendations for reliable service providers.
                     </p>
                   </BlurCard>
                   
@@ -131,9 +131,9 @@ const Index = () => {
                     <div className="mb-4 p-3 rounded-full bg-secondary/50 inline-flex">
                       <Star className="h-6 w-6 text-primary" />
                     </div>
-                    <h3 className="text-xl font-semibold mb-3">Personal Legal</h3>
+                    <h3 className="text-xl font-semibold mb-3">AI Business Coach</h3>
                     <p className="text-muted-foreground">
-                      Receive guidance on personal legal matters including property, employment, and contracts.
+                      Get practical guidance on business registration, loans, marketing, and growth strategies.
                     </p>
                   </BlurCard>
                 </div>
@@ -181,16 +181,16 @@ const Index = () => {
         <section id="cta" className="py-16">
           <div className="container max-w-6xl px-4 mx-auto">
             <BlurCard className="p-8 text-center" variant="bordered">
-              <h2 className="text-3xl font-bold mb-4">Ready to simplify your professional services?</h2>
+              <h2 className="text-3xl font-bold mb-4">Ready to grow your business with Wantok.ai?</h2>
               <p className="text-muted-foreground max-w-2xl mx-auto mb-8">
-                Join viinno.com today and access our full range of tax and legal services tailored for Papua New Guinea.
+                Join thousands of businesses and individuals who trust Wantok.ai for business discovery and SME support across Papua New Guinea.
               </p>
               <div className="flex flex-col sm:flex-row justify-center gap-4">
                 <Link to="/signup" className={cn(buttonVariants({ size: "lg" }))}>
-                  Create Free Account
+                  Find Services
                 </Link>
                 <Link to="/help" className={cn(buttonVariants({ variant: "outline", size: "lg" }))}>
-                  Learn More
+                  List Your Business
                 </Link>
               </div>
             </BlurCard>

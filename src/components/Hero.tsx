@@ -16,7 +16,7 @@ interface HeroProps {
 
 const Hero = ({
   title = "Professional services simplified for Papua New Guinea",
-  subtitle = "viinno.com offers streamlined tax and legal services tailored for businesses and individuals in Papua New Guinea.",
+  subtitle = "AI-powered business discovery, SME support, and community connections designed for Papua New Guinea and the Pacific.",
   ctaText = "Get Started",
   ctaLink = "/signup",
   secondaryCtaText = "Explore Services",
@@ -85,18 +85,18 @@ const Hero = ({
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <FeatureHighlight 
                 icon={<Shield className="h-8 w-8 text-primary" />} 
-                title="Professional Support" 
-                description="Expert guidance from qualified professionals in tax and legal matters" 
+                title="Trusted Business Network" 
+                description="Connect with verified businesses and trusted service providers across PNG" 
               />
               <FeatureHighlight 
                 icon={<FileText className="h-8 w-8 text-primary" />} 
-                title="Accurate Calculations" 
-                description="Precise PNG tax calculations following the latest regulations" 
+                title="Smart Business Search" 
+                description="AI-powered discovery to find the right services, suppliers, and partners" 
               />
               <FeatureHighlight 
                 icon={<MessageSquare className="h-8 w-8 text-primary" />} 
-                title="Legal Advice" 
-                description="Get timely legal consultations through chat or document review" 
+                title="AI Business Coach" 
+                description="Get practical guidance on business growth, compliance, and funding" 
               />
             </div>
           </BlurCard>
