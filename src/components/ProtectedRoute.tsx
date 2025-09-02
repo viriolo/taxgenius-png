@@ -16,6 +16,13 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   const { isAuthenticated, user, isLoading } = useAuth();
   const location = useLocation();
   
+  console.log('ProtectedRoute check:', {
+    isAuthenticated,
+    hasUser: !!user,
+    isLoading,
+    currentPath: location.pathname
+  });
+  
   if (isLoading) {
     // You could render a loading spinner here
     return <div className="flex items-center justify-center h-screen">Loading...</div>;

@@ -352,7 +352,14 @@ class AuthService {
    * Check if the user is authenticated
    */
   public isAuthenticated(): boolean {
-    return !!this.currentUser && !!this.accessToken && this.isTokenValid();
+    const result = !!this.currentUser && !!this.accessToken && this.isTokenValid();
+    console.log('AuthService.isAuthenticated():', {
+      hasCurrentUser: !!this.currentUser,
+      hasAccessToken: !!this.accessToken,
+      isTokenValid: this.isTokenValid(),
+      result
+    });
+    return result;
   }
   
   /**
